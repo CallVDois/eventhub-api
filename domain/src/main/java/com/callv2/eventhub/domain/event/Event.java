@@ -1,6 +1,10 @@
 package com.callv2.eventhub.domain.event;
 
+import static java.util.Objects.nonNull;
+
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,8 +34,8 @@ public class Event extends AggregateRoot<EventID> {
         this.source = source;
         this.occurredAt = occurredAt;
         this.ingestedAt = ingestedAt;
-        this.relatedEntities = relatedEntities == null ? Set.of() : Set.copyOf(relatedEntities);
-        this.data = data == null ? Map.of() : Map.copyOf(data);
+        this.relatedEntities = nonNull(relatedEntities) ? new HashSet<>(relatedEntities) : new HashSet<>();
+        this.data = nonNull(data) ? new HashMap<>(data) : new HashMap<>();
     }
 
     @Override
@@ -124,7 +128,7 @@ public class Event extends AggregateRoot<EventID> {
     }
 
     public Map<String, Object> getData() {
-        return data;
+        return new HashMap<>(data);
     }
 
 }
